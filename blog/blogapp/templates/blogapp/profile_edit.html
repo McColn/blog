@@ -1,0 +1,41 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .form-profile{
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 100px;
+    display: block;
+    overflow: hidden;
+  }
+  .btn-prof {
+    padding: 10px 20px;
+    background: aqua;
+    border: none;
+  }
+
+  @media (max-width: 700px) {
+    .form-profile{
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+</style>
+
+
+      <div class="container">
+
+        <div class="form-profile">
+            <h3 class="resume-title">Profile Edit</h3>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+                <br><button type="submit" class="btn-prof" style="width: 30%;">Submit</button>
+            </form>
+        </div>
+          
+      </div>
+  
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<div class="post container">
+    <h1>Create Article</h1>
+    <form method="post" id="article-form">
+        {% csrf_token %}
+        <div>
+            {{ form.title.label_tag }} {{ form.title }}
+        </div>
+        <!-- Create the editor container -->
+        <div id="editor-container"></div>
+        <!-- Hidden input to store the content -->
+        <input type="hidden" name="content" id="content">
+        
+        <button type="submit">Save</button>
+    </form>
+
+    <!-- Quill Library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['link', 'image']
+                ]
+            }
+        });
+
+        // On form submit, update the hidden input with the Quill data
+        document.getElementById('article-form').onsubmit = function() {
+            var content = document.querySelector('input[name=content]');
+            content.value = quill.root.innerHTML;
+        };
+    </script>
+
+</div>
+{% endblock %}

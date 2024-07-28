@@ -1,0 +1,148 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="post container">
+  
+  <!-- Post  -->
+  <div class="post-box tech" style="margin-top: 100px;">
+      <img src="{{post.image.url}}" alt="" class="post-img" height="">
+      <h2 class="category">Tech</h2>
+      <a href="#" class="post-title">{{post.title}}</a>
+      {% if request.user == post.author %}
+          <a href="{% url 'postedit' post.pk %}"><i class="bx bx-edit" style="color: black;"></i></a>
+          <a href="{% url 'postdelete' post.pk %}"><i class="bx bx-trash" style="color: black;"></i></a>
+      {% endif %}
+
+      <p style="display: flex; gap: 10px; align-items: center;">
+        <!-- like -->
+        <form method="POST" action="{% url 'like' post.pk %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" style="border: none; background: none; padding: 0;">
+                <i class="bx bx-like" style="color: white; background: black; padding: 8px; border-radius: 4px;"></i>
+            </button>
+        </form>
+        <!-- end of like -->
+    
+        <!-- dislike -->
+        <form method="POST" action="{% url 'dislike' post.pk %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" style="border: none; background: none; padding: 0;">
+                <i class="bx bx-dislike" style="color: white; background: black; padding: 8px; border-radius: 4px;"></i>
+            </button>
+        </form>
+        <!-- end of dislike -->
+    
+        <!-- comment -->
+        <a href="#" style="text-decoration: none; display: inline-block;">
+            <i class="bx bx-comment" style="color: white; background: black; padding: 8px; border-radius: 4px;"></i>
+        </a>
+        <!-- end of comment -->
+    
+        <!-- share -->
+        <a href="#" style="text-decoration: none; display: inline-block;">
+            <i class="bx bx-share" style="color: white; background: black; padding: 8px; border-radius: 4px;"></i>
+        </a>
+        <!-- end of share -->
+    </p>
+    
+    
+
+      <!-- count like and dislike -->
+          <p><span>{{ post.likes.all.count}}</span> Likes <span>{{ post.dislikes.all.count}}</span> Dislikes</p>
+      <!-- end of count like and dislike -->
+
+
+      <span class="post-date">{{post.created_on}}</span>
+      <!-- <p class="post-description">{{post.body|safe}}</p> -->
+       <div>
+        {{post.body|safe}}
+       </div>
+      <div class="profile">
+          <!-- <img src="images/testi1.jpg" alt="" class="profile-img"> -->
+           <p style="background: grey; padding: 3px; margin-top: 10px;">
+            Posted by:
+            <a class="profile-name" href="{% url 'profile' post.author.profile.pk %}">{{post.author}}</a>
+           </p>
+          
+      </div>
+
+      <!-- reply section -->
+      <style>
+        .comment-form {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 10px;
+        }
+    
+        .comment-form input[type="text"], 
+        .comment-form textarea, 
+        .comment-form select {
+          flex: 1;
+        }
+    
+        .comment-form button {
+          flex-shrink: 0;
+          width: auto;
+        }
+    
+        .comment-section {
+          display: none;
+        }
+      </style>
+
+
+          <!-- Add Comment Link -->
+              <!-- Add Comment Link -->
+                {% if user.is_authenticated %}
+                    <a href="#" id="add-comment-link" onclick="showCommentForm()" style="color: black;">Add Comment</a>
+                {% else %}
+                    <a href="{% url 'signin' %}" style="color: black;">Login to Add Comment</a>
+                {% endif %}
+
+                <!-- reply section -->
+                <div id="comment-section" class="comment-section">
+                  <form method="POST" action="" enctype="multipart/form-data" class="comment-form">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-warning">Submit</button>
+                  </form>
+                </div>
+
+
+              <script>
+                function showCommentForm() {
+                  document.getElementById('add-comment-link').style.display = 'none';
+                  document.getElementById('comment-section').style.display = 'flex';
+                }
+              </script>
+
+      <!-- end of reply -->
+
+      
+      <!-- list of comment -->
+      {% for comment in comments%}
+        <p style="font-weight: 100; font-size: smaller; color: grey; margin-top: 10px;">
+          <strong>{{comment.author}}</strong>{{comment.created_on}}
+          {% if request.user == comment.author %}
+          <a href="{% url 'commentdelete' post.pk comment.pk %}"><i class="bx bx-trash" style="color: black;"></i></a>
+            {% endif %}
+        </p>
+        <p>{{comment.comment}}</p>
+
+      {% endfor %}
+      <!-- end of list of comment -->
+      
+  </div>
+
+ 
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<section id="resume" class="resume">
+      <div class="container">
+        
+
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-8" data-aos="fade-up">
+            <a href="{% url 'postdetail' object.pk %}"><button class="btn btn-info">Back to posts</button></a>
+            <h3 class="resume-title">Delete Post</h3>
+            <div class="resume-item pb-0">
+              
+
+              <form method="POST"  action="" enctype="multipart/form-data">
+              {% csrf_token %}
+              <h4>Are you sure?</h4>
+              <p>you want to delete this post!!</p>
+
+              <br><button type="submit" class="btn btn-danger" style="width: 30%;">Delete</button>
+            
+              </form>
+              
+            </div>
+
+            
+          </div>
+          <div class="col-lg-2"></div>
+      </div>
+
+{% endblock %}

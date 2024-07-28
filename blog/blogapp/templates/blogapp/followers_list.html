@@ -1,0 +1,93 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .followers-section{
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 100px;
+    border: 1px solid aqua;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .detailed {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+  }
+  .follower-img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+  }
+  .follower-name {
+    color: black;
+    font-size: 14px;
+    font-weight: 300;
+
+  }
+  .action-unfollow {
+    padding: 5px 20px;
+    background: aqua;
+    border: none;
+    border-radius: 20px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 300ms ease;
+  }
+  .row:hover {
+    background: rgb(227, 236, 236);
+    border-radius: 20px;
+  }
+  h3 {
+    margin-bottom: 10px;
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    .followers-section {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+}
+  
+</style>
+
+
+<div class="container">
+  <div class="followers-section">
+
+    {% if profile.name %}
+        <h3 class="name">Followers for {{ profile.name }}</h3>
+    {% else %}
+        <h3 class="name">Followers for @{{ profile.user.username }}</h3>
+    {% endif %}
+
+    {% for follower in followers %}
+    <div class="row">
+      <div class="detailed">
+        <a href="{% url 'profile' follower.profile.pk %}"><img class ="follower-img" src="{{ follower.profile.picture.url }}"></a>
+        <a href="{% url 'profile' follower.profile.pk %}"><h5 class="follower-name">{{ follower.username }}</h5></a>
+      </div>
+      <a href="{% url 'profile' follower.profile.pk %}" class="action-unfollow">View</a>
+    </div>
+    
+    {% endfor %}
+
+  </div>  
+
+</div>
+
+
+{% endblock %}
+
+<form method="POST" action="{% url 'remove-folower' profile.pk %}">
+  {% csrf_token %}
+  <button class="unfollow" type="submit">Unfollow</button>
+</form>

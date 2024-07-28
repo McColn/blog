@@ -1,0 +1,48 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+.chat-page {
+  padding-left: 15%;
+  padding-right: 15%;
+  margin-top: 100px;
+}
+.chat-title{
+  font-size: 20px;
+  font-weight: 400;
+}
+.chat-button {
+  padding: 5px 10px;
+  border: none;
+  background: aqua;
+}
+h5 {
+  color: black;
+}
+</style>
+
+<div class="container">
+
+  <div class="chat-page">
+
+    <h3 class="chat-title">Your conversation</h3>
+
+    <div>
+      <form method="GET"  action="{% url 'create-thread' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+        <br><button type="submit" class="chat-button">Start a conversation</button>
+      </form>
+    </div>
+
+    {% for thread in threads.all %}
+    <a href="{% url 'thread' thread.pk %}">
+      <h5 style="active-chat">{{ thread.user }} - {{ thread.receiver }}</h5>
+    </a>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% endblock %}

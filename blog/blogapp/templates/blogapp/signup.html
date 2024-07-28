@@ -1,0 +1,80 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+.form-page{
+  display: flex;            /* Use Flexbox layout */
+  flex-direction: column;   /* Stack children vertically */
+  align-items: center;      /* Center items horizontally */
+  justify-content: center;  /* Center items vertically */
+  margin-top: 100px;
+  margin: 0;  
+  margin-top: 100px;
+  
+}
+form {
+  width: 50%;
+  border: 1px solid aquamarine;
+  padding: 20px;
+  border-radius: 15px;
+}
+.form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+.form-control {
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  background: #edecec;
+}
+.btn-submit {
+  padding: 8px;
+  background-color: aqua;
+  border: none;
+  border-radius: 5px;
+}
+
+@media (max-width: 700px) {
+  form {
+  width: 90%;
+}
+}
+</style>
+              
+<div class="container">
+  <div class="form-page">
+        <form class="form-inline" method="POST">
+          <h4 class="form-title">Registration Form</h4>
+        {% csrf_token %}
+          <label for="firstname">Firstname:</label><br>
+          <input type="text" class="form-control" name="firstname"><br><br>
+
+          <label for="lastname">lastname:</label><br>
+          <input type="text" class="form-control" name="lastname"><br><br>
+
+          <label for="username">email:</label><br>
+          <input type="email" class="form-control" name="email"><br><br>
+
+          <label for="username">Username:</label><br>
+          <input type="text" class="form-control" name="username"><br><br>
+
+          <label for="password">password:</label><br>
+          <input type="password" class="form-control" name="password1"><br><br>
+
+          <label for="password">conferm password:</label><br>
+          <input type="password" class="form-control" name="password2"><br><br>
+
+          <p>New user,<a href="{% url 'signin' %}" style="color: aqua;"> please Signin</a></p>
+          <button class="btn-submit" name="tuma">Register</button>
+        </form>
+
+      </div>
+
+    </div>
+</div>
+
+{% endblock %}

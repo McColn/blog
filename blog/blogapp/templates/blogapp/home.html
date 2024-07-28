@@ -1,0 +1,58 @@
+{% extends 'blogapp/base2.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="home" id="home" style="background: url('{% static 'blogapp/assets/img/frontimage.jpg' %}');">
+  <div class="home-text container">
+      <h2 class="home-title">McColn BlogTech</h2>
+      <span class="home-subtitle">Your source of great content</span><br>
+      <!-- <a href="{% url 'inbox' %}"><i class="bx bxs-chat" style="font-size: 40px; color: aqua;"></i></a> -->
+  </div>
+</section>
+
+
+<div class="post-filter container">
+  <span class="filter-item active-filter" data-filter="all">All</span>
+  <span class="filter-item" data-filter="tech">Tech</span>
+  <span class="filter-item" data-filter="food">Food</span>
+  <span class="filter-item" data-filter="news">News</span>
+</div>
+
+<div class="post container">
+  {% for i in posts %}
+  <!-- Post 1 -->
+  <div class="post-box tech">
+      <img src="{{i.image.url}}" alt="" class="post-img">
+      <h2 class="category">Tech</h2>
+      <a href="{% url 'postdetail' i.pk %}" class="post-title">{{i.title}}</a>
+      <span class="post-date">{{i.created_on}}</span>
+      <!-- <p class="post-description">{{i.body}}</p> -->
+      <div class="profile">
+          <!-- <img src="images/testi1.jpg" alt="" class="profile-img"> -->
+          Posted by:
+          <span class="profile-name">{{i.author}}</span>
+      </div>
+  </div>
+  {% endfor %}
+  
+
+
+</div>
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 10px;">
+  {% if user.is_authenticated %}
+  <a href="{% url 'posts' %}">
+    <button style="padding: 10px; border-radius: 5px; cursor: pointer;">Add Post</button>
+  </a>
+  {% else%}
+  <a href="{% url 'signin' %}">
+    <button style="padding: 10px; border-radius: 5px; cursor: pointer;">Signin to Add Post</button>
+  </a>
+  {% endif %}
+  
+</div>
+
+
+     
+
+{% endblock %}
